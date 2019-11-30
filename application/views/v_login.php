@@ -173,4 +173,6 @@ body, html {
         </div><!-- /card-container -->
     </div><!-- /container -->
 </body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript"><?php echo $this->session->userdata('message') ?></script>
 </html>

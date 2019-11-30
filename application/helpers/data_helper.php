@@ -1,5 +1,20 @@
 <?php   
 
+function alert_biasa($pesan,$type)
+{
+    return 'swal("'.$pesan.'", "You clicked the button!", "'.$type.'");';
+}
+
+function alert_tunggu($pesan,$type)
+{
+    return '
+    swal("Silahkan Tunggu!", {
+      button: false,
+      icon: "info",
+    });
+    ';
+}
+
 function tanggal_indo($tanggal, $cetak_hari = false)
 {
     $hari = array ( 1 =>    'Senin',

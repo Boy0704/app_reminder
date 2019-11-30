@@ -72,7 +72,9 @@ class App extends CI_Controller {
 					$sess_data['level'] = $row->level;
 					$this->session->set_userdata($sess_data);
 				}
-				redirect('app/index');
+				// redirect('app/index');
+				$this->session->set_flashdata('message', alert_tunggu('Gagal Login!\n username atau password kamu salah','warning'));
+				redirect('app/login','refresh');
 			} else {
 				?>
 				<script type="text/javascript">
