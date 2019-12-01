@@ -33,17 +33,15 @@
         <li><a href="app"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
         
         
-        <li><a href="mahasiswa"><i class="fa fa-circle-o"></i> <span>Data Mahasiswa</span></a></li>
-        <li><a href="mata_kuliah"><i class="fa fa-files-o"></i> <span>Data Matakuliah</span></a></li>
-        <li><a href="app/cetak"><i class="fa fa-print"></i> <span>Cetak Kartu</span></a></li>
+        <li><a href="Customer"><i class="fa fa-circle-o"></i> <span>Data Customer</span></a></li>
+        <li><a href="app/cetak1"><i class="fa fa-print"></i> <span>Cetak Customer</span></a></li>
         <li><a href="user"><i class="fa fa-users"></i> <span>Manajemen User</span></a></li>
-      <?php } elseif ($this->session->userdata('level') == 'mahasiswa') { ?>
+      <?php } elseif ($this->session->userdata('level') == 'psr') { ?>
          <li><a href="app"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
         
         
-        <li><a href="app/profil"><i class="fa fa-circle-o"></i> <span>Profil Mahasiswa</span></a></li>
-        <li><a href="mata_kuliah"><i class="fa fa-files-o"></i> <span>Data Matakuliah</span></a></li>
-        <li><a href="app/cetak"><i class="fa fa-print"></i> <span>Cetak Kartu</span></a></li>
+        <li><a href="mahasiswa"><i class="fa fa-circle-o"></i> <span>Data Customer</span></a></li>
+        <li><a href="app/cetak"><i class="fa fa-print"></i> <span>Cetak Customer</span></a></li>
       
 
       <?php } ?>

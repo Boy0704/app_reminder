@@ -32,10 +32,24 @@ class App extends CI_Controller {
 		}
 		$data = array(
 			'konten' => 'profil',
-			'judul_page' => 'Profil Mahasiswa',
+			'judul_page' => 'Profil',
 		);
 		$this->load->view('v_index',$data);
 	}
+
+	public function ubah_status($val,$id)
+	{
+		if ($val == 'ACTIVE') {
+			$this->db->where('id_customer', $id);
+			$this->db->update('customer', array('status'=>'PAID'));
+		} else if ($val == 'PAID') {
+			$this->db->where('id_customer', $id);
+			$this->db->update('customer', array('status'=>'EXPIRED'));
+		}
+		$this->session->set_flashdata('message',alert_biasa('Status berhasil di ubah','success'));
+		redirect('customer','refresh');
+	}
+
 
 	public function cetak()
 	{
@@ -72,16 +86,14 @@ class App extends CI_Controller {
 					$sess_data['level'] = $row->level;
 					$this->session->set_userdata($sess_data);
 				}
+				// print_r($this->session->userdata()); exit();
 				// redirect('app/index');
-				$this->session->set_flashdata('message', alert_tunggu('Gagal Login!\n username atau password kamu salah','warning'));
-				redirect('app/login','refresh');
+				// $this->session->set_flashdata('message', alert_tunggu('Gagal Login!\n username atau password kamu salah','warning'));
+				redirect('app','refresh');
 			} else {
-				?>
-				<script type="text/javascript">
-					alert('Username dan password kamu salah !');
-					window.location="<?php echo base_url('app/login'); ?>";
-				</script>
-				<?php
+				$this->session->set_flashdata('message', alert_biasa('Gagal Login!\n username atau password kamu salah','warning'));
+				// $this->session->set_flashdata('message', alert_tunggu('Gagal Login!\n username atau password kamu salah','warning'));
+				redirect('app/login','refresh');
 			}
 		}
 	}

@@ -49,7 +49,8 @@
             <select class="form-control show-tick" name="level">
                 <option value="<?php echo $level ?>"><?php echo $level ?></option>
                 <option value="admin">admin</option>
-                <option value="pimpinan">pimpinan</option>
+                <option value="psr">psr</option>
+                <option value="supervisor">supervisor</option>
             </select>
             </div>
         </div>

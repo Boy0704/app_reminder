@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="assets/bower_components/select2/dist/css/select2.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -96,7 +97,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2019 <a href="#">BANK SAMPAH</a>.</strong> All rights
+    <strong>Copyright &copy; 2019 <a href="#">APP REMINDER</a>.</strong> All rights
     reserved.
   </footer>
 

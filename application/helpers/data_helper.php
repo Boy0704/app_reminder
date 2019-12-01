@@ -1,4 +1,21 @@
 <?php   
+function status($val)
+{
+    if ($val == 'ACTIVE') {
+        echo "<span class='label label-success'>ACTIVE</span>";
+    } else if ($val == 'PAID') {
+        echo "<span class='label label-info'>PAID</span>";
+    } else {
+        echo "<span class='label label-danger'>EXPIRED</span>";
+    }
+}
+
+function disable($val)
+{
+    if ($val == 'update') {
+        echo "disabled";
+    } 
+}
 
 function alert_biasa($pesan,$type)
 {

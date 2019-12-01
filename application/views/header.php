@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>UN</b>I</span>
+      <span class="logo-mini"><b>AP</b>P</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>UNI</b>MUDA</span>
+      <span class="logo-lg"><b>APP</b> REMINDER</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
