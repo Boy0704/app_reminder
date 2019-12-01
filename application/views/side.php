@@ -34,7 +34,7 @@
         
         
         <li><a href="Customer"><i class="fa fa-circle-o"></i> <span>Data Customer</span></a></li>
-        <li><a href="app/cetak1"><i class="fa fa-print"></i> <span>Cetak Customer</span></a></li>
+        <li><a href="reminder"><i class="fa fa-send"></i> <span>Reminder</span></a></li>
         <li><a href="user"><i class="fa fa-users"></i> <span>Manajemen User</span></a></li>
       <?php } elseif ($this->session->userdata('level') == 'psr') { ?>
          <li><a href="app"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>

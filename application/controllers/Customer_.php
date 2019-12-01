@@ -51,11 +51,16 @@ class Customer extends CI_Controller
         if ($row) {
             $data = array(
 		'id_customer' => $row->id_customer,
-		'customer_code' => $row->customer_code,
-		'nama' => $row->nama,
-		'handphone' => $row->handphone,
+		'customer' => $row->customer,
+		'invoice_date' => $row->invoice_date,
+		'amount_total' => $row->amount_total,
+		'remark' => $row->remark,
 		'email1' => $row->email1,
 		'email2' => $row->email2,
+		'top' => $row->top,
+		'invoice_number' => $row->invoice_number,
+		'handphone' => $row->handphone,
+		'invoice_due_date' => $row->invoice_due_date,
 	    );
             $this->load->view('customer/customer_read', $data);
         } else {
@@ -72,11 +77,16 @@ class Customer extends CI_Controller
             'button' => 'Create',
             'action' => site_url('customer/create_action'),
 	    'id_customer' => set_value('id_customer'),
-	    'customer_code' => set_value('customer_code'),
-	    'nama' => set_value('nama'),
-	    'handphone' => set_value('handphone'),
+	    'customer' => set_value('customer'),
+	    'invoice_date' => set_value('invoice_date'),
+	    'amount_total' => set_value('amount_total'),
+	    'remark' => set_value('remark'),
 	    'email1' => set_value('email1'),
 	    'email2' => set_value('email2'),
+	    'top' => set_value('top'),
+	    'invoice_number' => set_value('invoice_number'),
+	    'handphone' => set_value('handphone'),
+	    'invoice_due_date' => set_value('invoice_due_date'),
 	);
         $this->load->view('v_index', $data);
     }
@@ -89,11 +99,16 @@ class Customer extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'customer_code' => $this->input->post('customer_code',TRUE),
-		'nama' => $this->input->post('nama',TRUE),
-		'handphone' => $this->input->post('handphone',TRUE),
+		'customer' => $this->input->post('customer',TRUE),
+		'invoice_date' => $this->input->post('invoice_date',TRUE),
+		'amount_total' => $this->input->post('amount_total',TRUE),
+		'remark' => $this->input->post('remark',TRUE),
 		'email1' => $this->input->post('email1',TRUE),
 		'email2' => $this->input->post('email2',TRUE),
+		'top' => $this->input->post('top',TRUE),
+		'invoice_number' => $this->input->post('invoice_number',TRUE),
+		'handphone' => $this->input->post('handphone',TRUE),
+		'invoice_due_date' => $this->input->post('invoice_due_date',TRUE),
 	    );
 
             $this->Customer_model->insert($data);
@@ -113,11 +128,16 @@ class Customer extends CI_Controller
                 'button' => 'Update',
                 'action' => site_url('customer/update_action'),
 		'id_customer' => set_value('id_customer', $row->id_customer),
-		'customer_code' => set_value('customer_code', $row->customer_code),
-		'nama' => set_value('nama', $row->nama),
-		'handphone' => set_value('handphone', $row->handphone),
+		'customer' => set_value('customer', $row->customer),
+		'invoice_date' => set_value('invoice_date', $row->invoice_date),
+		'amount_total' => set_value('amount_total', $row->amount_total),
+		'remark' => set_value('remark', $row->remark),
 		'email1' => set_value('email1', $row->email1),
 		'email2' => set_value('email2', $row->email2),
+		'top' => set_value('top', $row->top),
+		'invoice_number' => set_value('invoice_number', $row->invoice_number),
+		'handphone' => set_value('handphone', $row->handphone),
+		'invoice_due_date' => set_value('invoice_due_date', $row->invoice_due_date),
 	    );
             $this->load->view('v_index', $data);
         } else {
@@ -134,11 +154,16 @@ class Customer extends CI_Controller
             $this->update($this->input->post('id_customer', TRUE));
         } else {
             $data = array(
-		'customer_code' => $this->input->post('customer_code',TRUE),
-		'nama' => $this->input->post('nama',TRUE),
-		'handphone' => $this->input->post('handphone',TRUE),
+		'customer' => $this->input->post('customer',TRUE),
+		'invoice_date' => $this->input->post('invoice_date',TRUE),
+		'amount_total' => $this->input->post('amount_total',TRUE),
+		'remark' => $this->input->post('remark',TRUE),
 		'email1' => $this->input->post('email1',TRUE),
 		'email2' => $this->input->post('email2',TRUE),
+		'top' => $this->input->post('top',TRUE),
+		'invoice_number' => $this->input->post('invoice_number',TRUE),
+		'handphone' => $this->input->post('handphone',TRUE),
+		'invoice_due_date' => $this->input->post('invoice_due_date',TRUE),
 	    );
 
             $this->Customer_model->update($this->input->post('id_customer', TRUE), $data);
@@ -163,11 +188,16 @@ class Customer extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('customer_code', 'customer code', 'trim|required');
-	$this->form_validation->set_rules('nama', 'nama', 'trim|required');
-	$this->form_validation->set_rules('handphone', 'handphone', 'trim|required');
+	$this->form_validation->set_rules('customer', 'customer', 'trim|required');
+	$this->form_validation->set_rules('invoice_date', 'invoice date', 'trim|required');
+	$this->form_validation->set_rules('amount_total', 'amount total', 'trim|required');
+	$this->form_validation->set_rules('remark', 'remark', 'trim|required');
 	$this->form_validation->set_rules('email1', 'email1', 'trim|required');
-	// $this->form_validation->set_rules('email2', 'email2', 'trim|required');
+	$this->form_validation->set_rules('email2', 'email2', 'trim|required');
+	$this->form_validation->set_rules('top', 'top', 'trim|required');
+	$this->form_validation->set_rules('invoice_number', 'invoice number', 'trim|required');
+	$this->form_validation->set_rules('handphone', 'handphone', 'trim|required');
+	$this->form_validation->set_rules('invoice_due_date', 'invoice due date', 'trim|required');
 
 	$this->form_validation->set_rules('id_customer', 'id_customer', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -178,5 +208,5 @@ class Customer extends CI_Controller
 /* End of file Customer.php */
 /* Location: ./application/controllers/Customer.php */
 /* Please DO NOT modify this information : */
-/* Generated by Boy Kurniawan 2019-12-01 05:06:00 */
+/* Generated by Boy Kurniawan 2019-11-30 15:20:36 */
 /* https://jualkoding.com */

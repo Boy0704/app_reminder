@@ -5,14 +5,9 @@
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
-                     <?php echo $this->session->userdata('message') <> '' ? '<div class="alert alert-success alert-dismissible">
-                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Success!</strong>'.$this->session->userdata('message').'</div>' : ''; ?>.
-                    
-                    <!-- <script type="text/javascript">
-
-                        <?php echo 'swal("'.$this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''.'", "You clicked the button!", "success");' ?>
-                    </script> -->
+                    <script type="text/javascript">
+                        <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
+                    </script>
                 </div>
             </div>
             <div class="col-md-1 text-right">
@@ -39,11 +34,17 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Customer Code</th>
-		<th>Nama</th>
-		<th>Handphone</th>
-		<th>Email1</th>
-		<th>Email2</th>
+		<th>Customer</th>
+		<th>Invoice Date</th>
+		<th>Amount Total</th>
+		<!-- <th>Remark</th> -->
+		<!-- <th>Email1</th> -->
+		<!-- <th>Email2</th> -->
+		<!-- <th>Top</th> -->
+		<th>Invoice Number</th>
+		<!-- <th>Handphone</th> -->
+        <th>Invoice Due Date</th>
+		<th>Status</th>
 		<th>Action</th>
             </tr><?php
             foreach ($customer_data as $customer)
@@ -51,12 +52,21 @@
                 ?>
                 <tr>
 			<td width="80px"><?php echo ++$start ?></td>
-			<td><?php echo $customer->customer_code ?></td>
-			<td><?php echo $customer->nama ?></td>
-			<td><?php echo $customer->handphone ?></td>
+			<td><?php echo $customer->customer ?></td>
+			<td><?php echo $customer->invoice_date ?></td>
+			<td><?php echo number_format($customer->amount_total) ?></td>
+			<!-- <td><?php echo $customer->remark ?></td>
 			<td><?php echo $customer->email1 ?></td>
 			<td><?php echo $customer->email2 ?></td>
+			<td><?php echo $customer->top ?></td> -->
+			<td><?php echo $customer->invoice_number ?></td>
+			<!-- <td><?php echo $customer->handphone ?></td> -->
+            <td><?php echo $customer->invoice_due_date ?></td>
+			<td>
+            <a href="app/ubah_status/<?php echo $customer->status.'/'.$customer->id_customer ?>" onclick="javasciprt: return confirm('Yakin ingin mengubah status ini ?')" title="klik untuk ubah status"><?php echo status($customer->status) ?></a>         
+            </td>
 			<td style="text-align:center" width="200px">
+                <a href=""><span class="label label-success">Kirim Wa & Email</span></a>
 				<?php 
 				echo anchor(site_url('customer/update/'.$customer->id_customer),'<span class="label label-info">Ubah</span>'); 
 				echo ' | '; 

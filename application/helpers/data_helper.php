@@ -1,4 +1,26 @@
-<?php   
+<?php 
+
+function get_data($tabel,$primary_key,$id,$select)
+{
+    $CI =& get_instance();
+    $data = $CI->db->query("SELECT $select FROM $tabel where $primary_key='$id' ")->row_array();
+    return $data[$select];
+}
+
+function select_option($name, $table, $field, $pk, $selected = null,$class = null, $extra = null, $option_tamabahan = null) {
+    $ci = & get_instance();
+    $cmb = "<select name='$name' class='form-control $class  ' $extra>";
+    $cmb .= $option_tamabahan;
+    $data = $ci->db->get($table)->result();
+    foreach ($data as $row) {
+        $cmb .="<option value='" . $row->$pk . "'";
+        $cmb .= $selected == $row->$pk ? 'selected' : '';
+        $cmb .=">" . $row->$field . "</option>";
+    }
+    $cmb .= "</select>";
+    return $cmb;
+}
+
 function status($val)
 {
     if ($val == 'ACTIVE') {

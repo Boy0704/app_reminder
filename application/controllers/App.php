@@ -50,6 +50,25 @@ class App extends CI_Controller {
 		redirect('customer','refresh');
 	}
 
+	public function cek_customer()
+	{
+		$n = $_GET['code'];
+		$data = $this->db->get_where('customer', array('customer_code'=>$n))->row();
+		echo json_encode(array('email1'=>$data->email1,'email2'=>$data->email2,'hp'=>$data->handphone));
+	}
+
+	public function cek_invoice_date()
+	{
+		$inv_date = $_GET['inv_date'];
+		$n = $_GET['n'];
+		//Menambah tanggal
+		$date1 = $inv_date;
+		$date = new DateTime($date1);
+		$date_plus = $date->modify($n);
+		$tgl = $date_plus->format("Y-m-d");
+		echo json_encode(array('tanggal'=>$tgl));
+	}
+
 
 	public function cetak()
 	{
