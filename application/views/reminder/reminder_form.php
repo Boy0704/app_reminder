@@ -1,5 +1,5 @@
 
-        <form action="<?php echo $action; ?>" method="post">
+        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
 	    <div class="form-group">
             <label for="varchar">Customer Code <b style="color: red">*</b> <?php echo form_error('customer_code') ?></label>
             <!-- <input type="text" class="form-control" name="customer_code" id="customer_code" placeholder="Customer Code" value="<?php echo $customer_code; ?>" /> -->
@@ -83,6 +83,9 @@
             <p class="label label-info"><?php echo $file3; ?></p>
             <?php } ?>
         </div>
+        <input type="hidden" name="old_file1" value="<?php echo $file1 ?>">
+        <input type="hidden" name="old_file2" value="<?php echo $file2 ?>">
+        <input type="hidden" name="old_file3" value="<?php echo $file3 ?>">
 	    
 	    <input type="hidden" name="id_reminder" value="<?php echo $id_reminder; ?>" /> 
 	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 

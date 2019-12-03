@@ -5,6 +5,10 @@ if (!defined('BASEPATH'))
 
 class Reminder extends CI_Controller
 {
+    public $file1 = '';
+    public $file2 = '';
+    public $file3 = '';
+
     function __construct()
     {
         parent::__construct();
@@ -114,6 +118,9 @@ class Reminder extends CI_Controller
 		'invoice_number' => $this->input->post('invoice_number',TRUE),
 		'handphone' => $this->input->post('handphone',TRUE),
 		'invoice_due_date' => $this->input->post('invoice_due_date',TRUE),
+        'file1' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file1'),
+        'file2' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file2'),
+        'file3' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file3')
         
 	    );
 
@@ -163,6 +170,23 @@ class Reminder extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('id_reminder', TRUE));
         } else {
+
+            if ($_FILES['file1']['name'] !='') {
+                $this->file1 = upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file1');
+            } else {
+                $this->file1 = $this->input->post('old_file1');
+            } 
+            if ($_FILES['file2']['name'] !='') {
+                $this->file2 = upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file2');
+            } else  {
+                $this->file2 = $this->input->post('old_file2');
+            } 
+            if ($_FILES['file3']['name'] !='') {
+                $this->file3 = upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file3');
+            } else {
+                $this->file3 = $this->input->post('old_file3');
+            }
+
             $data = array(
 		'customer_code' => $this->input->post('customer_code',TRUE),
 		'invoice_date' => $this->input->post('invoice_date',TRUE),
@@ -173,7 +197,10 @@ class Reminder extends CI_Controller
 		'top' => $this->input->post('top',TRUE),
 		'invoice_number' => $this->input->post('invoice_number',TRUE),
 		'handphone' => $this->input->post('handphone',TRUE),
-		'invoice_due_date' => $this->input->post('invoice_due_date',TRUE),
+        'invoice_due_date' => $this->input->post('invoice_due_date',TRUE),
+        'file1' => $this->file1,
+        'file2' => $this->file2,
+		'file3' => $this->file3,
 	    );
 
             $this->Reminder_model->update($this->input->post('id_reminder', TRUE), $data);
