@@ -1,6 +1,6 @@
 
         <div class="row" id="uploadExcel" style="margin-left: 5px; display: none; ">
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form action="app/import_reminder" method="POST" enctype="multipart/form-data">
                 <div class="col-md-4"><input type="file" name="uploadexcel" class="form-control"></div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
-                    <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
+                    <?php //echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
                 </div>
             </div>
             <div class="col-md-1 text-right">

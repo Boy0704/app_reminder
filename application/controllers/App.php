@@ -57,6 +57,72 @@ class App extends CI_Controller {
 		echo json_encode(array('email1'=>$data->email1,'email2'=>$data->email2,'hp'=>$data->handphone));
 	}
 
+	public function import_reminder()
+	{
+		unlink('upload/import_data/import_data.xlsx');
+		include APPPATH.'third_party/PHPExcel/PHPExcel.php';
+
+		// Fungsi untuk melakukan proses upload file
+		$return = array();
+		$this->load->library('upload'); // Load librari upload
+			
+		$config['upload_path'] = './upload/import_data/';
+		$config['allowed_types'] = 'xlsx';
+		$config['max_size']	= '2048';
+		$config['overwrite'] = true;
+		$config['file_name'] = 'import_data';
+	
+		$this->upload->initialize($config); // Load konfigurasi uploadnya
+		if($this->upload->do_upload('uploadexcel')){ // Lakukan upload dan Cek jika proses upload berhasil
+			// Jika berhasil :
+			$return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+			// return $return;
+		}else{
+			// Jika gagal :
+			$return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+			// return $return;
+		}
+		// print_r($return);exit();
+		
+		$excelreader = new PHPExcel_Reader_Excel2007();
+		$loadexcel = $excelreader->load('upload/import_data/import_data.xlsx'); // Load file yang telah diupload ke folder excel
+		$sheet = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
+		
+		// Buat sebuah variabel array untuk menampung array data yg akan kita insert ke database
+		$data = array();
+		
+		$numrow = 1;
+		foreach($sheet as $row){
+			// Cek $numrow apakah lebih dari 1
+			// Artinya karena baris pertama adalah nama-nama kolom
+			// Jadi dilewat saja, tidak usah diimport
+			if($numrow > 1){
+				// Kita push (add) array data ke variabel data
+				array_push($data, array(
+					'customer_code'=>$row['A'], // Insert data nis dari kolom A di excel
+					'email1'=>$row['B'], // Insert data nama dari kolom B di excel
+					'email2'=>$row['C'], // Insert data jenis kelamin dari kolom C di excel
+					'handphone'=>$row['D'], // Insert data alamat dari kolom D di excel
+					'top'=>$row['E'], // Insert data alamat dari kolom D di excel
+					'invoice_number'=>$row['F'], // Insert data alamat dari kolom D di excel
+					'invoice_date'=>$row['G'], // Insert data alamat dari kolom D di excel
+					'invoice_due_date'=>$row['H'], // Insert data alamat dari kolom D di excel
+					'amount_total'=>$row['I'], // Insert data alamat dari kolom D di excel
+				));
+			}
+			
+			$numrow++; // Tambah 1 setiap kali looping
+		}
+		echo "<pre>";
+		print_r($data);exit;
+
+		// Panggil fungsi insert_multiple yg telah kita buat sebelumnya di model
+		$this->db->insert_batch('reminder', $data);
+		
+		$this->session->set_flashdata('message',alert_biasa('Import data excel berhasil','success'));
+		redirect('reminder','refresh');
+	}
+
 	public function cek_invoice_date()
 	{
 		$inv_date = $_GET['inv_date'];

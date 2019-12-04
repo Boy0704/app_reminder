@@ -148,6 +148,8 @@
 <!-- <script src="assets/dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="assets/dist/js/demo.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript"><?php echo $this->session->userdata('message') ?></script>
 <script>
   $(function () {
     //Initialize Select2 Elements
