@@ -61,7 +61,7 @@ class App extends CI_Controller {
 				$email = $value->email1;
 			}
 		
-			$customer = $value->nama;
+			$customer = get_data('customer','customer_code',$value->customer_code,'nama');
 			$invoice = $value->invoice_number;
 			$phone_no = $value->handphone;
 			$psr = '';
