@@ -50,6 +50,103 @@ class App extends CI_Controller {
 		redirect('customer','refresh');
 	}
 
+	public function kirim_invoice()
+	{
+		foreach ($this->db->get('reminder')->result() as $key => $value) {
+
+			$email = '';
+			if ($value->email1 == null) {
+				$email = $value->email2;
+			} else {
+				$email = $value->email1;
+			}
+		
+			$customer = $value->customer_code;
+			$invoice = $value->invoice_number;
+			$phone_no = $value->handphone;
+			$psr = '';
+			$message = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Kami ".$psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
+
+			$message = preg_replace( "/(\n)/", "<ENTER>", $message );
+			$message = preg_replace( "/(\r)/", "<ENTER>", $message );
+
+			$phone_no = preg_replace( "/(\n)/", ",", $phone_no );
+			$phone_no = preg_replace( "/(\r)/", "", $phone_no );
+
+			$data = array("phone_no" => $phone_no, "key" => "b0d8a55cdfe3e0f97426f96f5bdf02d153bad3a993c2aaf3", "message" => $message);
+			$data_string = json_encode($data);
+
+			// echo $data_string; exit();
+			$ch = curl_init('http://116.203.92.59/api/send_message');
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_VERBOSE, 0);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Content-Type: application/json',
+			'Content-Length: ' . strlen($data_string))
+			);
+
+			//cek apakah sudah 7 sebelum due date
+			$date = new DateTime($value->invoice_due_date);
+			$date_plus = $date->modify("-7 days");
+			$tgl = $date_plus->format("Y-m-d");
+			// print_r($tgl);
+			if ($tgl == date('Y-m-d') ) {
+				//kirim WA
+				$result = curl_exec($ch);
+
+				//kirim email
+				$config = [
+		            'mailtype'  => 'html',
+		            'charset'   => 'utf-8',
+		            'protocol'  => 'smtp',
+		            'smtp_host' => 'smtp.gmail.com',
+		            'smtp_user' => 'email@gmail.com',  // Email gmail
+		            'smtp_pass'   => 'passwordgmail',  // Password gmail
+		            'smtp_crypto' => 'ssl',
+		            'smtp_port'   => 465,
+		            'crlf'    => "\r\n",
+		            'newline' => "\r\n"
+		        ];
+
+		        // Load library email dan konfigurasinya
+		        $this->load->library('email', $config);
+
+		        // Email dan nama pengirim
+		        $this->email->from('no-reply@admin.com', 'Tagihan Invoice');
+
+		        // Email penerima
+		        $this->email->to($email); // Ganti dengan email tujuan
+
+		        // Lampiran email, isi dengan url/path file
+		        //$this->email->attach('https://masrud.com/content/images/20181215150137-codeigniter-smtp-gmail.png');
+
+		        // Subject email
+		        $this->email->subject('Kirim Email dengan SMTP Gmail CodeIgniter | MasRud.com');
+
+		        // Isi email
+		        $this->email->message($message);
+
+		        // Tampilkan pesan sukses atau error
+		        if ($this->email->send()) {
+		            echo 'Sukses! email berhasil dikirim.<br>';
+		        } else {
+		            echo 'Error! email tidak dapat dikirim.<br>';
+		        }
+
+				echo "Y <BR>";
+			} else {
+				echo "T <BR>";
+			}
+			
+		}
+	}
+
 	public function cek_customer()
 	{
 		$n = $_GET['code'];
