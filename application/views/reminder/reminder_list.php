@@ -1,5 +1,5 @@
 
-        <div class="row" id="uploadExcel" style="margin-left: 5px; ">
+        <div class="row" id="uploadExcel" style="margin-left: 5px; display: none; ">
             <form action="#" method="POST" enctype="multipart/form-data">
                 <div class="col-md-4"><input type="file" name="uploadexcel" class="form-control"></div>
                 <div class="col-md-2">
@@ -97,7 +97,7 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#uploadExcel').hide();
+                // $('#uploadExcel').hide();
 
                 $('#upload').click(function(event) {
                     $('#uploadExcel').show();
