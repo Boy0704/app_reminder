@@ -1,7 +1,17 @@
 
+        <div class="row" id="uploadExcel" style="margin-left: 5px; ">
+            <form action="#" method="POST" enctype="multipart/form-data">
+                <div class="col-md-4"><input type="file" name="uploadexcel" class="form-control"></div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+                </div>
+            </form>
+        </div><br>
+
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
                 <?php echo anchor(site_url('reminder/create'),'Create', 'class="btn btn-primary"'); ?>
+                <button id="upload" class="btn btn-info">Import Excel</button>
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -84,4 +94,14 @@
                 <?php echo $pagination ?>
             </div>
         </div>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#uploadExcel').hide();
+
+                $('#upload').click(function(event) {
+                    $('#uploadExcel').show();
+                });;                
+            });
+        </script>
     
