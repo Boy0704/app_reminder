@@ -61,11 +61,12 @@ class App extends CI_Controller {
 				$email = $value->email1;
 			}
 		
-			$customer = $value->customer_code;
+			$customer = $value->nama;
 			$invoice = $value->invoice_number;
 			$phone_no = $value->handphone;
 			$psr = '';
 			$message = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Kami ".$psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
+			$messageEmail = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Kami ".$psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
 
 			$message = preg_replace( "/(\n)/", "<ENTER>", $message );
 			$message = preg_replace( "/(\r)/", "<ENTER>", $message );
@@ -106,8 +107,8 @@ class App extends CI_Controller {
 		            'charset'   => 'utf-8',
 		            'protocol'  => 'smtp',
 		            'smtp_host' => 'smtp.gmail.com',
-		            'smtp_user' => 'email@gmail.com',  // Email gmail
-		            'smtp_pass'   => 'passwordgmail',  // Password gmail
+		            'smtp_user' => 'ucikurniasih123@gmail.com',  // Email gmail
+		            'smtp_pass'   => 'nyexngvwogkjcsbr',  // Password gmail
 		            'smtp_crypto' => 'ssl',
 		            'smtp_port'   => 465,
 		            'crlf'    => "\r\n",
@@ -127,10 +128,10 @@ class App extends CI_Controller {
 		        //$this->email->attach('https://masrud.com/content/images/20181215150137-codeigniter-smtp-gmail.png');
 
 		        // Subject email
-		        $this->email->subject('Kirim Email dengan SMTP Gmail CodeIgniter | MasRud.com');
+		        $this->email->subject('INVOICE $invoice');
 
 		        // Isi email
-		        $this->email->message($message);
+		        $this->email->message($messageEmail);
 
 		        // Tampilkan pesan sukses atau error
 		        if ($this->email->send()) {
