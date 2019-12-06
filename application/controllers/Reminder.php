@@ -47,6 +47,7 @@ class Reminder extends CI_Controller
             'konten' => 'reminder/reminder_list',
         );
         $this->load->view('v_index', $data);
+        // echo $this->db->last_query();
     }
 
     public function read($id) 

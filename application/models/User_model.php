@@ -45,13 +45,16 @@ class User_model extends CI_Model
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
-        $this->db->like('id_user', $q);
-	$this->db->or_like('nama_user', $q);
-	$this->db->or_like('username', $q);
-	$this->db->or_like('password', $q);
-	$this->db->or_like('email', $q);
-	$this->db->or_like('foto_user', $q);
-	$this->db->or_like('level', $q);
+        if ($this->session->userdata('level') !='admin') {
+            $this->db->where('id_cabang', get_data('users','id_user',$this->session->userdata('id_user'),'id_cabang'));
+        }
+        $this->db->like('nama_user', $q);
+	// $this->db->or_like('nama_user', $q);
+	// $this->db->or_like('username', $q);
+	// $this->db->or_like('password', $q);
+	// $this->db->or_like('email', $q);
+	// $this->db->or_like('foto_user', $q);
+	// $this->db->or_like('level', $q);
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }

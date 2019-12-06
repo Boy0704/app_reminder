@@ -50,18 +50,22 @@ class Reminder_model extends CI_Model
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
-        $this->db->like('id_reminder', $q);
-	$this->db->or_like('customer_code', $q);
-	$this->db->or_like('invoice_date', $q);
-	$this->db->or_like('amount_total', $q);
-	$this->db->or_like('remark', $q);
-	$this->db->or_like('email1', $q);
-	$this->db->or_like('email2', $q);
-	$this->db->or_like('top', $q);
-	$this->db->or_like('invoice_number', $q);
-	$this->db->or_like('handphone', $q);
-	$this->db->or_like('invoice_due_date', $q);
-	$this->db->or_like('status', $q);
+        if ($this->session->userdata('level') !='admin') {
+            $this->db->where('user', $this->session->userdata('id_user'));
+        }
+        $this->db->like('invoice_number', $q);
+ //        $this->db->or_like('user', $this->session->userdata('id_user'), 'after');
+	// $this->db->or_like('customer_code', $q);
+	// $this->db->or_like('invoice_date', $q);
+	// $this->db->or_like('amount_total', $q);
+	// $this->db->or_like('remark', $q);
+	// $this->db->or_like('email1', $q);
+	// $this->db->or_like('email2', $q);
+	// $this->db->or_like('top', $q);
+	// $this->db->or_like('invoice_number', $q);
+	// $this->db->or_like('handphone', $q);
+	// $this->db->or_like('invoice_due_date', $q);
+	// $this->db->or_like('status', $q);
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
