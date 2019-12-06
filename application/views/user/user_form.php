@@ -62,9 +62,11 @@
             <!-- <input type="text" class="form-control" name="level" id="level" placeholder="Level" value="<?php echo $level; ?>" /> -->
             <select class="form-control show-tick" name="level">
                 <option value="<?php echo $level ?>"><?php echo $level ?></option>
-                <option value="admin">admin</option>
+                <?php if ($this->session->userdata('level') == 'admin'): ?>
+                    <option value="admin">admin</option>
+                    <option value="supervisor">supervisor</option>
+                <?php endif ?>
                 <option value="psr">psr</option>
-                <option value="supervisor">supervisor</option>
             </select>
             </div>
         </div>
