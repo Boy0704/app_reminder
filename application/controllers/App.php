@@ -111,7 +111,7 @@ class App extends CI_Controller {
 		            'mailtype'  => 'html',
 		            'charset'   => 'utf-8',
 		            'protocol'  => 'smtp',
-		            'smtp_host' => 'smtp.gmail.com',
+		            'smtp_host' => 'ssl://smtp.gmail.com',
 		            'smtp_user' => 'ucikurniasih123@gmail.com',  // Email gmail
 		            'smtp_pass'   => 'nyexngvwogkjcsbr',  // Password gmail
 		            'smtp_crypto' => 'ssl',
