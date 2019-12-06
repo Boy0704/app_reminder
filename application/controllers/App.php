@@ -52,6 +52,7 @@ class App extends CI_Controller {
 
 	public function kirim_invoice()
 	{
+		$this->db->where('to_send', 0);
 		foreach ($this->db->get('reminder')->result() as $key => $value) {
 
 			$email = '';
@@ -71,7 +72,7 @@ class App extends CI_Controller {
 			$email_psr = get_data('users','id_user',$value->user,'email');
 			$psr = '';
 			$message = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Kami ".$psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
-			$messageEmail = '<p>Kepada:<br />'.$customer.'<br />Di Tempat<br /><br />Perihal : Konfirmasi Piutang<br /><br />Terlampir kami sampaikan bahwa saldo hutang Bapak/Ibu kepada kami atas pembelian spare part dan jasa service dengan No Invoice '.$invoice.' yang akan jatuh tempo pada tanggal '.$value->handphone.' sebesar Rp.'.number_format($value->amount_total).'.00 . Mohon dapat segera melunasi Piutang tersebut sebelum jatuh tempo yang telah ditentukan.<br /><br />Pembayaran dapat di transfer ke Rekening kami:<br /><br />PT Hexindo Adiperkasa Tbk<br />'.$bank.' cabang '.$cabang.'<br />A/C '.$no_rek.' (IDR)<br /><br />Mohon apabila sudah dilakukan pembayaran, untuk menghubungi PSR kami Sdr. '.$nama_psr.' dengan email&nbsp;<a href="mailto:'.$email_psr.'" target="_blank" rel="noopener noreferrer">'.$email_psr.'</a>&nbsp;.<br /><br />Demikian disampaikan atas perhatian dan kerjasamanya diucapkan terima kasih.<br /><br />Hormat kami,<br />PT Hexindo Adiperkasa Tbk</p>';
+			$messageEmail = '<p>Kepada:<br />'.$customer.'<br />Di Tempat<br /><br />Perihal : Konfirmasi Piutang<br /><br />Terlampir kami sampaikan bahwa saldo hutang Bapak/Ibu kepada kami atas pembelian spare part dan jasa service dengan No Invoice '.$invoice.' yang akan jatuh tempo pada tanggal '.$value->invoice_due_date.' sebesar Rp.'.number_format($value->amount_total).'.00 . Mohon dapat segera melunasi Piutang tersebut sebelum jatuh tempo yang telah ditentukan.<br /><br />Pembayaran dapat di transfer ke Rekening kami:<br /><br />PT Hexindo Adiperkasa Tbk<br />'.$bank.' cabang '.$cabang.'<br />A/C '.$no_rek.' (IDR)<br /><br />Mohon apabila sudah dilakukan pembayaran, untuk menghubungi PSR kami Sdr. '.$nama_psr.' dengan email&nbsp;<a href="mailto:'.$email_psr.'" target="_blank" rel="noopener noreferrer">'.$email_psr.'</a>&nbsp;.<br /><br />Demikian disampaikan atas perhatian dan kerjasamanya diucapkan terima kasih.<br /><br />Hormat kami,<br />PT Hexindo Adiperkasa Tbk</p>';
 
 			$message = preg_replace( "/(\n)/", "<ENTER>", $message );
 			$message = preg_replace( "/(\r)/", "<ENTER>", $message );
@@ -141,7 +142,7 @@ class App extends CI_Controller {
 		        $this->load->library('email', $config);
 
 		        // Email dan nama pengirim
-		        $this->email->from('admin@jualkoding.com', 'AR Reminder - Invoice No. $invoice');
+		        $this->email->from('admin@jualkoding.com', 'AR Reminder - Invoice No. '.$invoice.'');
 
 		        // Email penerima
 		        $this->email->to($email); // Ganti dengan email tujuan
@@ -152,7 +153,7 @@ class App extends CI_Controller {
 		        $this->email->attach(base_url().'upload/'.$value->file3);
 
 		        // Subject email
-		        $this->email->subject('AR Reminder - Invoice No. $invoice');
+		        $this->email->subject('AR Reminder - Invoice No. '.$invoice.'');
 
 		        // Isi email
 		        $this->email->message($messageEmail);
@@ -160,6 +161,8 @@ class App extends CI_Controller {
 		        // Tampilkan pesan sukses atau error
 		        if ($this->email->send()) {
 		            echo 'Sukses! email berhasil dikirim.<br>';
+		            $this->db->where('id_reminder', $value->id_reminder);
+		            $this->db->update('reminder', array('to_send'=>1));
 		        } else {
 		            echo 'Error! email tidak dapat dikirim.<br>';
 		            echo $this->email->print_debugger();
