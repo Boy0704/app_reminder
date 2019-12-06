@@ -141,7 +141,7 @@ class App extends CI_Controller {
 		        $this->load->library('email', $config);
 
 		        // Email dan nama pengirim
-		        $this->email->from('no-reply@admin.com', 'Tagihan Invoice');
+		        $this->email->from('admin@jualkoding.com', 'AR Reminder - Invoice No. $invoice');
 
 		        // Email penerima
 		        $this->email->to($email); // Ganti dengan email tujuan
