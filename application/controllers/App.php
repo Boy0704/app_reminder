@@ -107,18 +107,35 @@ class App extends CI_Controller {
 				$result = curl_exec($ch);
 
 				//kirim email
-				$config = [
-		            'mailtype'  => 'html',
-		            'charset'   => 'utf-8',
-		            'protocol'  => 'ssmtp',
-		            'smtp_host' => 'ssl://ssmtp.gmail.com',
-		            'smtp_user' => 'ucikurniasih123@gmail.com',  // Email gmail
-		            'smtp_pass'   => 'nyexngvwogkjcsbr',  // Password gmail
-		            'smtp_crypto' => 'ssl',
-		            'smtp_port'   => 465,
-		            'crlf'    => "\r\n",
-		            'newline' => "\r\n"
-		        ];
+				// $config = [
+		  //           'mailtype'  => 'html',
+		  //           'charset'   => 'utf-8',
+		  //           'protocol'  => 'smtp',
+		  //           'smtp_host' => 'smtp.gmail.com',
+		  //           'smtp_user' => 'ucikurniasih123@gmail.com',  // Email gmail
+		  //           'smtp_pass'   => 'nyexngvwogkjcsbr',  // Password gmail
+		  //           'smtp_crypto' => 'ssl',
+		  //           'smtp_port'   => 465,
+		  //           'crlf'    => "\r\n",
+		  //           'newline' => "\r\n"
+		  //       ];
+
+				$email_saya = "admin@jualkoding.com";
+				$pass_saya  = "%$#@cxz1";
+				//konfigurasi email
+				$config = array();
+				$config['charset'] = 'utf-8';
+				$config['useragent'] = 'Jualkoding.com';
+				$config['protocol']= "smtp";
+				$config['mailtype']= "html";
+				$config['smtp_host']= "ssl://mail.jualkoding.com";
+				$config['smtp_port']= "465";
+				$config['smtp_timeout']= "465";
+				$config['smtp_user']= "$email_saya";
+				$config['smtp_pass']= "$pass_saya";
+				$config['crlf']="\r\n";
+				$config['newline']="\r\n";
+				$config['wordwrap'] = TRUE;
 
 		        // Load library email dan konfigurasinya
 		        $this->load->library('email', $config);
