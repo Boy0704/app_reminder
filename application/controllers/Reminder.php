@@ -120,7 +120,8 @@ class Reminder extends CI_Controller
 		'invoice_due_date' => $this->input->post('invoice_due_date',TRUE),
         'file1' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file1'),
         'file2' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file2'),
-        'file3' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file3')
+        'file3' => upload_gambar_biasa('file', 'upload/', 'pdf|doc|docx|xlsx', 3000, 'file3'),
+        'user' => $this->session->userdata('id_user')
         
 	    );
 
@@ -155,6 +156,7 @@ class Reminder extends CI_Controller
         'file1' => set_value('file1', $row->file1),
         'file2' => set_value('file2', $row->file2),
         'file3' => set_value('file3', $row->file3),
+        'user' => $this->session->userdata('id_user')
 	    );
             $this->load->view('v_index', $data);
         } else {
@@ -201,6 +203,7 @@ class Reminder extends CI_Controller
         'file1' => $this->file1,
         'file2' => $this->file2,
 		'file3' => $this->file3,
+        'user' => $this->session->userdata('id_user')
 	    );
 
             $this->Reminder_model->update($this->input->post('id_reminder', TRUE), $data);

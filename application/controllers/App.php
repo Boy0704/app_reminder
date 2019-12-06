@@ -66,7 +66,11 @@ class App extends CI_Controller {
 			$phone_no = $value->handphone;
 			$psr = '';
 			$message = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Kami ".$psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
-			$messageEmail = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Kami ".$psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
+			$messageEmail = '
+
+			<p>Kepada:<br />'.$customer.'<br />Di Tempat<br /><br />Perihal : Konfirmasi Piutang<br /><br />Terlampir kami sampaikan bahwa saldo hutang Bapak/Ibu kepada kami atas pembelian spare part dan jasa service dengan No Invoice '.$invoice.' yang akan jatuh tempo pada tanggal '.$value->handphone.' sebesar Rp.'.number_format($value->amount_total).'.00 . Mohon dapat segera melunasi Piutang tersebut sebelum jatuh tempo yang telah ditentukan.<br /><br />Pembayaran dapat di transfer ke Rekening kami:<br /><br />PT Hexindo Adiperkasa Tbk<br />'.get_data('cabang','id_cabang',get_data('user','id_user',$value->user,'id_cabang'),'bank').' cabang '.get_data('cabang','id_cabang',get_data('user','id_user',$value->user,'id_cabang'),'cabang').'<br />A/C '.get_data('cabang','id_cabang',get_data('user','id_user',$value->user,'id_cabang'),'no_rekening').' (IDR)<br /><br />Mohon apabila sudah dilakukan pembayaran, untuk menghubungi PSR kami Sdr. '.get_data('cabang','id_cabang',get_data('user','id_user',$value->user,'nama_user').' dengan email&nbsp;<a href="mailto:'.get_data('cabang','id_cabang',get_data('user','id_user',$value->user,'email').'" target="_blank" rel="noopener noreferrer">'.get_data('cabang','id_cabang',get_data('user','id_user',$value->user,'email').'</a>&nbsp;.<br /><br />Demikian disampaikan atas perhatian dan kerjasamanya diucapkan terima kasih.<br /><br />Hormat kami,<br />PT Hexindo Adiperkasa Tbk</p>
+
+			';
 
 			$message = preg_replace( "/(\n)/", "<ENTER>", $message );
 			$message = preg_replace( "/(\r)/", "<ENTER>", $message );
@@ -125,10 +129,12 @@ class App extends CI_Controller {
 		        $this->email->to($email); // Ganti dengan email tujuan
 
 		        // Lampiran email, isi dengan url/path file
-		        //$this->email->attach('https://masrud.com/content/images/20181215150137-codeigniter-smtp-gmail.png');
+		        $this->email->attach(base_url().'upload/'.$value->file1);
+		        $this->email->attach(base_url().'upload/'.$value->file2);
+		        $this->email->attach(base_url().'upload/'.$value->file3);
 
 		        // Subject email
-		        $this->email->subject('INVOICE $invoice');
+		        $this->email->subject('AR Reminder - Invoice No. $invoice');
 
 		        // Isi email
 		        $this->email->message($messageEmail);

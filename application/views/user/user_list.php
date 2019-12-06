@@ -37,6 +37,7 @@
         <th>Username</th>
         <th>Email</th>
         <th>Foto User</th>
+        <th>Cabang</th>
         <th>Level</th>
         <th>Action</th>
             </tr><?php
@@ -49,6 +50,7 @@
             <td><?php echo $user->username ?></td>
             <td><?php echo $user->email ?></td>
             <td><img src="image/user/<?php echo $user->foto_user ?>" style="width: 100px; height: 100px;"></td>
+            <td><?php echo get_data('cabang','id_cabang',$user->id_cabang,'cabang') ?></td>
             <td><?php echo $user->level ?></td>
             <td style="text-align:center" width="200px">
                 <?php 

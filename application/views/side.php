@@ -34,6 +34,7 @@
         
         
         <li><a href="Customer"><i class="fa fa-circle-o"></i> <span>Data Customer</span></a></li>
+        <li><a href="cabang"><i class="fa fa-circle-o"></i> <span>Data Cabang</span></a></li>
         <li><a href="reminder"><i class="fa fa-send"></i> <span>Reminder</span></a></li>
         <li><a href="user"><i class="fa fa-users"></i> <span>Manajemen User</span></a></li>
       <?php } elseif ($this->session->userdata('level') == 'psr') { ?>

@@ -44,6 +44,20 @@
         </div>
         <div class="form-group">
             <div class="form-line">
+            <label for="varchar">Cabang </label>
+            <!-- <input type="text" class="form-control" name="level" id="level" placeholder="Level" value="<?php echo $level; ?>" /> -->
+            <select class="form-control show-tick" name="id_cabang">
+                <option value="<?php echo $id_cabang ?>"><?php echo $id_cabang ?></option>
+                <?php 
+                foreach ($this->db->get('cabang')->result() as $key => $value) {
+                 ?>
+                <option value="<?php echo $value->id_cabang ?>"><?php echo $value->cabang ?></option>
+                <?php } ?>
+            </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-line">
             <label for="varchar">Level </label>
             <!-- <input type="text" class="form-control" name="level" id="level" placeholder="Level" value="<?php echo $level; ?>" /> -->
             <select class="form-control show-tick" name="level">
