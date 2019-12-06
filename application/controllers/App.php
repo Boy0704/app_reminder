@@ -110,8 +110,8 @@ class App extends CI_Controller {
 				$config = [
 		            'mailtype'  => 'html',
 		            'charset'   => 'utf-8',
-		            'protocol'  => 'smtp',
-		            'smtp_host' => 'ssl://smtp.gmail.com',
+		            'protocol'  => 'ssmtp',
+		            'smtp_host' => 'ssl://ssmtp.gmail.com',
 		            'smtp_user' => 'ucikurniasih123@gmail.com',  // Email gmail
 		            'smtp_pass'   => 'nyexngvwogkjcsbr',  // Password gmail
 		            'smtp_crypto' => 'ssl',
