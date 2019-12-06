@@ -145,6 +145,7 @@ class App extends CI_Controller {
 		            echo 'Sukses! email berhasil dikirim.<br>';
 		        } else {
 		            echo 'Error! email tidak dapat dikirim.<br>';
+		            echo $this->email->print_debugger();
 		        }
 
 				echo "Y <BR>";
