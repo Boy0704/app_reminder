@@ -5,6 +5,9 @@
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
                 </div>
+                <div class="col-md-4">
+                    <a href="upload/import_data/upload.xlsx" class="label label-info">Download Template Import</a>
+                </div>
             </form>
         </div><br>
 
@@ -13,6 +16,7 @@
                 <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
                     <?php echo anchor(site_url('reminder/create'),'Create', 'class="btn btn-primary"'); ?>
                     <button id="upload" class="btn btn-info">Import Excel</button>
+                    <a href="app/export_reminder/<?php echo get_data('users','id_user',$this->session->userdata('id_user'),'id_cabang') ?>" target="_blank" class="btn btn-success">Export Data</a>
                 <?php endif ?>
                 
             </div>

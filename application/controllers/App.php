@@ -37,6 +37,11 @@ class App extends CI_Controller {
 		$this->load->view('v_index',$data);
 	}
 
+	public function export_reminder($id_cabang='')
+	{
+		$this->load->view('reminder/export_reminder');
+	}
+
 	public function ubah_status($val,$id)
 	{
 		if ($val == 'ACTIVE') {
