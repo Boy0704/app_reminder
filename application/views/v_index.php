@@ -31,6 +31,8 @@
   <link rel="stylesheet" href="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="assets/bower_components/select2/dist/css/select2.min.css">
+  <!-- DATA TABLES -->
+  <link href="assets/dist/css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -148,11 +150,14 @@
 <!-- <script src="assets/dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="assets/dist/js/demo.js"></script>
+<script src="assets/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="assets/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript"><?php echo $this->session->userdata('message') ?></script>
 <script>
   $(function () {
     //Initialize Select2 Elements
+    $("#example1").dataTable();
     $('.select2').select2()
   })
 </script>

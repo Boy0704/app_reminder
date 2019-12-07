@@ -21,7 +21,7 @@
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 ">
-                <b style="color: red">*) berdasarkan Invoice Number</b>
+                <!-- <b style="color: red">*) berdasarkan Invoice Number</b>
                 <form action="<?php echo site_url('reminder/index'); ?>" class="form-inline" method="get">
 
                     <div class="input-group">
@@ -38,10 +38,12 @@
                           <button class="btn btn-primary" type="submit">Search</button>
                         </span>
                     </div>
-                </form>
+                </form> -->
             </div>
         </div>
-        <table class="table table-bordered" style="margin-bottom: 10px">
+        <div class="table-responsive">
+        <table class="table table-bordered" style="margin-bottom: 10px" id="example1">
+            <thead>
             <tr>
                 <th>No</th>
         <th>Customer</th>
@@ -56,8 +58,13 @@
         <th>Invoice Due Date</th>
         <th>Status</th>
         <th>Action</th>
-            </tr><?php
-            foreach ($reminder_data as $reminder)
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $this->db->where('id_cabang', get_data('users','id_user',$this->session->userdata('id_user'),'id_cabang'));
+            $reminder_data = $this->db->get('reminder');
+            foreach ($reminder_data->result() as $reminder)
             {
                 ?>
                 <tr>
@@ -75,7 +82,7 @@
             <td>
             <a href="app/ubah_status/<?php echo $reminder->status.'/'.$reminder->id_reminder ?>" onclick="javasciprt: return confirm('Yakin ingin mengubah status ini ?')" title="klik untuk ubah status"><?php echo status($reminder->status) ?></a>         
             </td>
-            <td style="text-align:center" width="200px">
+            <td style="text-align:center" width="100px">
                 <!-- <a href=""><span class="label label-success">Kirim Wa & Email</span></a> -->
                 <?php 
                 echo anchor(site_url('reminder/update/'.$reminder->id_reminder),'<span class="label label-info">Ubah</span>'); 
@@ -87,15 +94,17 @@
                 <?php
             }
             ?>
+            </tbody>
         </table>
-        <div class="row">
+        </div>
+        <!-- <div class="row">
             <div class="col-md-6">
                 <a href="#" class="btn btn-primary">Total Record : <?php echo $total_rows ?></a>
 	    </div>
             <div class="col-md-6 text-right">
                 <?php echo $pagination ?>
             </div>
-        </div>
+        </div> -->
 
         <script type="text/javascript">
             $(document).ready(function() {
