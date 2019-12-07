@@ -46,13 +46,13 @@ class App extends CI_Controller {
 	{
 		if ($val == 'ACTIVE') {
 			$this->db->where('id_customer', $id);
-			$this->db->update('customer', array('status'=>'PAID'));
+			$this->db->update('reminder', array('status'=>'PAID'));
 		} else if ($val == 'PAID') {
 			$this->db->where('id_customer', $id);
-			$this->db->update('customer', array('status'=>'EXPIRED'));
+			$this->db->update('reminder', array('status'=>'EXPIRED'));
 		}
 		$this->session->set_flashdata('message',alert_biasa('Status berhasil di ubah','success'));
-		redirect('customer','refresh');
+		redirect('reminder','refresh');
 	}
 
 	public function kirim_invoice()
