@@ -3,7 +3,7 @@
 	    <div class="form-group">
             <label for="varchar">Customer Code <b style="color: red">*</b> <?php echo form_error('customer_code') ?></label>
             <!-- <input type="text" class="form-control" name="customer_code" id="customer_code" placeholder="Customer Code" value="<?php echo $customer_code; ?>" /> -->
-            <select id="customer_code" name="customer_code" class="form-control">
+            <select id="customer_code" name="customer_code" class="form-control select2" required>
                 <option value="<?php echo $customer_code ?>"><?php echo $customer_code ?></option>
                 <?php 
                 foreach ($this->db->get('customer')->result() as $rw) {

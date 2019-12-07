@@ -67,7 +67,9 @@
             </thead>
             <tbody>
             <?php
-            $this->db->where('id_cabang', get_data('users','id_user',$this->session->userdata('id_user'),'id_cabang'));
+            if ($this->session->userdata('level')!='admin') {
+                $this->db->where('id_cabang', get_data('users','id_user',$this->session->userdata('id_user'),'id_cabang'));
+            }
             $reminder_data = $this->db->get('reminder');
             foreach ($reminder_data->result() as $reminder)
             {

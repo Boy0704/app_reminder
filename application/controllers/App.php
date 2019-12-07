@@ -224,8 +224,13 @@ class App extends CI_Controller {
 			// Cek $numrow apakah lebih dari 1
 			// Artinya karena baris pertama adalah nama-nama kolom
 			// Jadi dilewat saja, tidak usah diimport
+			
 			if($numrow > 1){
 				// Kita push (add) array data ke variabel data
+				$temp_di  = PHPExcel_Style_NumberFormat::toFormattedString($row['G'],'YYYY-MM-DD');
+      			// $actualdate_di = date('Y-m-d',$temp_di);
+      			$temp_du  = PHPExcel_Style_NumberFormat::toFormattedString($row['H'],'YYYY-MM-DD');
+      			// $actualdate_du = date('Y-m-d',$temp_du);
 				array_push($data, array(
 					'customer_code'=>$row['A'], // Insert data nis dari kolom A di excel
 					'email1'=>$row['B'], // Insert data nama dari kolom B di excel
@@ -233,8 +238,8 @@ class App extends CI_Controller {
 					'handphone'=>$row['D'], // Insert data alamat dari kolom D di excel
 					'top'=>$row['E'], // Insert data alamat dari kolom D di excel
 					'invoice_number'=>$row['F'], // Insert data alamat dari kolom D di excel
-					'invoice_date'=>$row['G'], // Insert data alamat dari kolom D di excel
-					'invoice_due_date'=>$row['H'], // Insert data alamat dari kolom D di excel
+					'invoice_date'=>$temp_di, // Insert data alamat dari kolom D di excel
+					'invoice_due_date'=>$temp_du, // Insert data alamat dari kolom D di excel
 					'amount_total'=>$row['I'], // Insert data alamat dari kolom D di excel
 					'user' => $this->session->userdata('id_user')
 				));
@@ -242,8 +247,8 @@ class App extends CI_Controller {
 			
 			$numrow++; // Tambah 1 setiap kali looping
 		}
-		echo "<pre>";
-		print_r($data);exit;
+		// echo "<pre>";
+		// print_r($data);exit;
 
 		// Panggil fungsi insert_multiple yg telah kita buat sebelumnya di model
 		$this->db->insert_batch('reminder', $data);
