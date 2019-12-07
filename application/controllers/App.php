@@ -36,6 +36,41 @@ class App extends CI_Controller {
 		);
 		$this->load->view('v_index',$data);
 	}
+	public function ganti_profil($id_user)
+	{
+		// print_r($_FILES);exit();
+		$foto = '';
+		if ($_FILES['foto_user']['name'] == '') {
+			$foto = $this->input->post('old_foto');
+		} else {
+			$nmfile = "user_".time();
+            $config['upload_path'] = './image/user';
+            $config['allowed_types'] = 'jpg|png';
+            $config['max_size'] = '20000';
+            $config['file_name'] = $nmfile;
+            // load library upload
+            $this->load->library('upload', $config);
+            // upload gambar 1
+            $this->upload->do_upload('foto_user');
+            $result1 = $this->upload->data();
+            $result = array('gambar'=>$result1);
+            $dfile = $result['gambar']['file_name'];
+            $foto = $dfile;
+			
+			
+		}
+		$data = array(
+				'username' => $_POST['username'],
+				'nama_user' => $_POST['nama_user'],
+				'password' => $_POST['password'],
+				'email' => $_POST['email'],
+				'foto_user' => $foto
+			);
+		$this->db->where('id_user', $id_user);
+			$this->db->update('users', $data);
+			$this->session->set_flashdata('message',alert_biasa('Profil berhasil di ubah','success'));
+			redirect('app/profil','refresh');
+	}
 
 	public function export_reminder($id_cabang='')
 	{

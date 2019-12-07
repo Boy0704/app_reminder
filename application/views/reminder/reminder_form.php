@@ -58,30 +58,38 @@
             <input type="date" class="form-control" name="invoice_due_date" id="invoice_due_date" placeholder="Invoice Due Date" value="<?php echo $invoice_due_date; ?>" />
         </div>
         <div class="form-group">
-            <label>File Upload</label>
-            <input type="file" name="file1" class="form-control">
-            <?php 
-            if ($file1 != '') {
-             ?>
-            <p><b>*) File Sebelumnya</b></p>
-            <p class="label label-info"><?php echo $file1; ?></p>
-            <?php } ?><br>
+            <label>File Upload</label><br>
+            <div id="upload1" class="col-md-3">
+              <input type="file" name="file1" class="form-control">
+              <?php 
+              if ($file1 != '') {
+               ?>
+              <p><b>*) File Sebelumnya</b></p>
+              <p class="label label-info"><?php echo $file1; ?></p>
+              <?php } ?>
+            </div>
+            <button  class="btn btn-primary" id="btn2"><i class="fa fa-plus"></i></button><br><br>
 
-            <input type="file" name="file2" class="form-control">
-            <?php 
-            if ($file2 != '') {
-             ?>
-            <p><b>*) File Sebelumnya</b></p>
-            <p class="label label-info"><?php echo $file2; ?></p>
-            <?php } ?><br>
+            <div id="upload2" class="col-md-3" style="display: none;">
+              <input type="file" name="file2" class="form-control">
+              <?php 
+              if ($file2 != '') {
+               ?>
+              <p><b>*) File Sebelumnya</b></p>
+              <p class="label label-info"><?php echo $file2; ?></p>
+              <?php } ?>
+            </div>
+            <button  class="btn btn-primary" id="btn3" style="display: none;"><i class="fa fa-plus"></i></button><br><br>
 
-            <input type="file" name="file3" class="form-control">
-            <?php 
-            if ($file3 != '') {
-             ?>
-            <p><b>*) File Sebelumnya</b></p>
-            <p class="label label-info"><?php echo $file3; ?></p>
-            <?php } ?>
+            <div id="upload3" class="col-md-3" style="display: none;">
+              <input type="file" name="file3" class="form-control">
+              <?php 
+              if ($file3 != '') {
+               ?>
+              <p><b>*) File Sebelumnya</b></p>
+              <p class="label label-info"><?php echo $file3; ?></p>
+              <?php } ?>
+            </div><br><br>
         </div>
         <input type="hidden" name="old_file1" value="<?php echo $file1 ?>">
         <input type="hidden" name="old_file2" value="<?php echo $file2 ?>">
@@ -137,6 +145,14 @@
                .always(function() {
                    console.log("complete");
                });
+           });
+
+           $('#btn2').click(function(event) {
+             $('#upload2').show();
+             $('#btn3').show();
+           });
+           $('#btn3').click(function(event) {
+             $('#upload3').show();
            });
 
        });

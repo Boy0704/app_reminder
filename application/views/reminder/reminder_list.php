@@ -93,7 +93,11 @@
             <td><?php echo $reminder->invoice_due_date ?></td>
             
             <td>
-            <a href="app/ubah_status/<?php echo $reminder->status.'/'.$reminder->id_reminder ?>" onclick="javasciprt: return confirm('Yakin ingin mengubah status ini ?')" title="klik untuk ubah status"><?php echo status($reminder->status) ?></a>         
+            <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr') {?>
+            <a href="app/ubah_status/<?php echo $reminder->status.'/'.$reminder->id_reminder ?>" onclick="javasciprt: return confirm('Yakin ingin mengubah status ini ?')" title="klik untuk ubah status"><?php echo status($reminder->status) ?></a>     
+            <?php  } else { ?>
+                <?php echo status($reminder->status) ?>
+            <?php } ?>    
             </td>
             <td><?php echo $retVal = ($reminder->to_send == 1) ? '<span class="label label-success">success</span>' : '<span class="label label-warning">on prosess</span>' ; ?></td>
             <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
