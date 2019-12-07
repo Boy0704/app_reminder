@@ -1,7 +1,9 @@
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
+                <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
                 <?php echo anchor(site_url('customer/create'),'Create', 'class="btn btn-primary"'); ?>
+            <?php endif ?>
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -44,7 +46,9 @@
 		<th>Handphone</th>
 		<th>Email1</th>
 		<th>Email2</th>
+        <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
 		<th>Action</th>
+        <?php endif ?>
             </tr><?php
             foreach ($customer_data as $customer)
             {
@@ -56,13 +60,15 @@
 			<td><?php echo $customer->handphone ?></td>
 			<td><?php echo $customer->email1 ?></td>
 			<td><?php echo $customer->email2 ?></td>
-			<td style="text-align:center" width="200px">
+            <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+			<td style="text-align:center" width="100px">
 				<?php 
 				echo anchor(site_url('customer/update/'.$customer->id_customer),'<span class="label label-info">Ubah</span>'); 
 				echo ' | '; 
 				echo anchor(site_url('customer/delete/'.$customer->id_customer),'<span class="label label-danger">Hapus</span>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
+            <?php endif ?>
 		</tr>
                 <?php
             }

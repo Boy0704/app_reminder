@@ -1,7 +1,9 @@
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
+                <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
                 <?php echo anchor(site_url('cabang/create'),'Create', 'class="btn btn-primary"'); ?>
+            <?php endif ?>
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -35,7 +37,9 @@
 		<th>Cabang</th>
 		<th>No Rekening</th>
 		<th>Bank</th>
+        <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
 		<th>Action</th>
+        <?php endif ?>
             </tr><?php
             foreach ($cabang_data as $cabang)
             {
@@ -45,13 +49,15 @@
 			<td><?php echo $cabang->cabang ?></td>
 			<td><?php echo $cabang->no_rekening ?></td>
 			<td><?php echo $cabang->bank ?></td>
-			<td style="text-align:center" width="200px">
+            <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+			<td style="text-align:center" width="100px">
 				<?php 
 				echo anchor(site_url('cabang/update/'.$cabang->id_cabang),'<span class="label label-info">Ubah</span>'); 
 				echo ' | '; 
 				echo anchor(site_url('cabang/delete/'.$cabang->id_cabang),'<span class="label label-danger">Hapus</span>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
+            <?php endif ?>
 		</tr>
                 <?php
             }

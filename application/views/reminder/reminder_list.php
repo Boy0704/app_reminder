@@ -10,8 +10,11 @@
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
-                <?php echo anchor(site_url('reminder/create'),'Create', 'class="btn btn-primary"'); ?>
-                <button id="upload" class="btn btn-info">Import Excel</button>
+                <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+                    <?php echo anchor(site_url('reminder/create'),'Create', 'class="btn btn-primary"'); ?>
+                    <button id="upload" class="btn btn-info">Import Excel</button>
+                <?php endif ?>
+                
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -57,7 +60,9 @@
         <!-- <th>Handphone</th> -->
         <th>Invoice Due Date</th>
         <th>Status</th>
+        <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
         <th>Action</th>
+        <?php endif ?>
             </tr>
             </thead>
             <tbody>
@@ -82,6 +87,7 @@
             <td>
             <a href="app/ubah_status/<?php echo $reminder->status.'/'.$reminder->id_reminder ?>" onclick="javasciprt: return confirm('Yakin ingin mengubah status ini ?')" title="klik untuk ubah status"><?php echo status($reminder->status) ?></a>         
             </td>
+            <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
             <td style="text-align:center" width="100px">
                 <!-- <a href=""><span class="label label-success">Kirim Wa & Email</span></a> -->
                 <?php 
@@ -90,6 +96,7 @@
                 echo anchor(site_url('reminder/delete/'.$reminder->id_reminder),'<span class="label label-danger">Hapus</span>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
                 ?>
             </td>
+            <?php endif ?>
         </tr>
                 <?php
             }

@@ -1,6 +1,8 @@
 <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
+                <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
                 <?php echo anchor(site_url('user/create'),'Tambah Data', 'class="btn btn-primary"'); ?>
+            <?php endif ?>
             </div>
             <div class="col-md-4 text-center">
                 <div style="margin-top: 8px" id="message">
@@ -39,7 +41,9 @@
         <th>Foto User</th>
         <th>Cabang</th>
         <th>Level</th>
+        <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
         <th>Action</th>
+        <?php endif ?>
             </tr><?php
             foreach ($user_data as $user)
             {
@@ -52,13 +56,15 @@
             <td><img src="image/user/<?php echo $user->foto_user ?>" style="width: 100px; height: 100px;"></td>
             <td><?php echo get_data('cabang','id_cabang',$user->id_cabang,'cabang') ?></td>
             <td><?php echo $user->level ?></td>
-            <td style="text-align:center" width="200px">
+            <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+            <td style="text-align:center" width="100px">
                 <?php 
                 echo anchor(site_url('user/update/'.$user->id_user),'<button class="btn btn-sm btn-info"><i class="fa fa-pencil"></i></button>'); 
                 echo ' | '; 
                 echo anchor(site_url('user/delete/'.$user->id_user),'<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
                 ?>
             </td>
+            <?php endif ?>
         </tr>
                 <?php
             }
