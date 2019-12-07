@@ -64,6 +64,7 @@
         <!-- <th>Handphone</th> -->
         <th>Invoice Due Date</th>
         <th>Status</th>
+        <th>to Send</th>
         <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
         <th>Action</th>
         <?php endif ?>
@@ -90,9 +91,11 @@
             <td><?php echo $reminder->invoice_number ?></td>
             <!-- <td><?php echo $reminder->handphone ?></td> -->
             <td><?php echo $reminder->invoice_due_date ?></td>
+            
             <td>
             <a href="app/ubah_status/<?php echo $reminder->status.'/'.$reminder->id_reminder ?>" onclick="javasciprt: return confirm('Yakin ingin mengubah status ini ?')" title="klik untuk ubah status"><?php echo status($reminder->status) ?></a>         
             </td>
+            <td><?php echo $retVal = ($reminder->to_send == 1) ? '<span class="label label-success">success</span>' : '<span class="label label-danger">on prosess</span>' ; ?></td>
             <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
             <td style="text-align:center" width="100px">
                 <!-- <a href=""><span class="label label-success">Kirim Wa & Email</span></a> -->
