@@ -1,8 +1,21 @@
+        <div class="row" id="uploadExcel" style="margin-left: 5px; display: none; ">
+            <form action="app/import_customer" method="POST" enctype="multipart/form-data">
+                <div class="col-md-4"><input type="file" name="uploadexcel" class="form-control"></div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+                </div>
+                <div class="col-md-4">
+                    <a href="upload/import_data/customer.xlsx" class="label label-info">Download Template Import</a>
+                </div>
+            </form>
+        </div><br>
+
 
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md-4">
-                <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+                <?php if ($this->session->userdata('level')=='admin'): ?>
                 <?php echo anchor(site_url('customer/create'),'Create', 'class="btn btn-primary"'); ?>
+                <button id="upload" class="btn btn-info">Import Excel</button>
             <?php endif ?>
             </div>
             <div class="col-md-4 text-center">
@@ -46,7 +59,7 @@
 		<th>Handphone</th>
 		<th>Email1</th>
 		<th>Email2</th>
-        <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+        <?php if ($this->session->userdata('level')=='admin' ): ?>
 		<th>Action</th>
         <?php endif ?>
             </tr><?php
@@ -60,7 +73,7 @@
 			<td><?php echo $customer->handphone ?></td>
 			<td><?php echo $customer->email1 ?></td>
 			<td><?php echo $customer->email2 ?></td>
-            <?php if ($this->session->userdata('level')=='admin' or $this->session->userdata('level')=='psr'): ?>
+            <?php if ($this->session->userdata('level')=='admin'): ?>
 			<td style="text-align:center" width="100px">
 				<?php 
 				echo anchor(site_url('customer/update/'.$customer->id_customer),'<span class="label label-info">Ubah</span>'); 
@@ -82,4 +95,12 @@
                 <?php echo $pagination ?>
             </div>
         </div>
-    
+    <script type="text/javascript">
+            $(document).ready(function() {
+                // $('#uploadExcel').hide();
+
+                $('#upload').click(function(event) {
+                    $('#uploadExcel').show();
+                });;                
+            });
+        </script>

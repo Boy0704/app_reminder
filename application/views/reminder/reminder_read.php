@@ -1,6 +1,8 @@
-
+		<center>
+			<h3>Detail Reminder</h3>
+		</center>
         <table class="table">
-	    <tr><td>Customer Code</td><td><?php echo $customer_code; ?></td></tr>
+	    <tr><td>Customer Name</td><td><?php echo get_data('customer','customer_code',$customer_code,'nama'); ?></td></tr>
 	    <tr><td>Invoice Date</td><td><?php echo $invoice_date; ?></td></tr>
 	    <tr><td>Amount Total</td><td><?php echo $amount_total; ?></td></tr>
 	    <tr><td>Remark</td><td><?php echo $remark; ?></td></tr>

@@ -6,7 +6,7 @@ class App extends CI_Controller {
 	function __construct()
     {
         parent::__construct();
-        
+        $this->load->model('Reminder_model');
         $this->load->library('pagination');
     }
 	
@@ -77,13 +77,35 @@ class App extends CI_Controller {
 		$this->load->view('reminder/export_reminder');
 	}
 
+	public function export_reminder_pdf()
+	{
+		ob_start();
+
+		$filename="reminder.pdf"; //ubah untuk menentukan nama file pdf yang dihasilkan nantinya
+		//==========================================================================================================
+		//Copy dan paste langsung script dibawah ini,untuk mengetahui lebih jelas tentang fungsinya silahkan baca-baca tutorial tentang HTML2PDF
+		//==========================================================================================================
+		$this->load->view('reminder/export_reminder_pdf');
+		$content = ob_get_clean();
+		$content = '<page style="font-family: freeserif">'.nl2br($content).'</page>';
+		 require_once(APPPATH.'third_party/html2pdf/html2pdf.class.php');
+		 try
+		 {
+		  $html2pdf = new HTML2PDF('L','A4','en', false, 'ISO-8859-15',array(10, 0, 20, 0));
+		  $html2pdf->setDefaultFont('Arial');
+		  $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
+		  $html2pdf->Output($filename);
+		 }
+		 catch(HTML2PDF_exception $e) { echo $e; }
+	}
+
 	public function ubah_status($val,$id)
 	{
 		if ($val == 'ACTIVE') {
-			$this->db->where('id_customer', $id);
+			$this->db->where('id_reminder', $id);
 			$this->db->update('reminder', array('status'=>'PAID'));
 		} else if ($val == 'PAID') {
-			$this->db->where('id_customer', $id);
+			$this->db->where('id_reminder', $id);
 			$this->db->update('reminder', array('status'=>'EXPIRED'));
 		}
 		$this->session->set_flashdata('message',alert_biasa('Status berhasil di ubah','success'));
@@ -110,6 +132,7 @@ class App extends CI_Controller {
 			$no_rek = get_data('cabang','id_cabang',get_data('users','id_user',$value->user,'id_cabang'),'no_rekening');
 			$nama_psr = get_data('users','id_user',$value->user,'nama_user');
 			$email_psr = get_data('users','id_user',$value->user,'email');
+			$telp_psr = get_data('users','id_user',$value->user,'no_telp');
 			$psr = '';
 			$message = "Pelanggan yang terhormat:\n\n".$customer."\n\nKami telah mengirimkan email ke ".$email." untuk menginformasikan perihal Invoice No.".$invoice."."."\n\nUntuk informasi lebih lanjut, silahkan menghubungi Sdr. ".$nama_psr."\n\nTerimakasih.\n\nHormat kami,\nPT Hexindo Adiperkasa Tbk";
 			$messageEmail = '
@@ -149,31 +172,17 @@ class App extends CI_Controller {
 				//kirim WA
 				$result = curl_exec($ch);
 
-				//kirim email
-				// $config = [
-		  //           'mailtype'  => 'html',
-		  //           'charset'   => 'utf-8',
-		  //           'protocol'  => 'smtp',
-		  //           'smtp_host' => 'smtp.gmail.com',
-		  //           'smtp_user' => 'ucikurniasih123@gmail.com',  // Email gmail
-		  //           'smtp_pass'   => 'nyexngvwogkjcsbr',  // Password gmail
-		  //           'smtp_crypto' => 'ssl',
-		  //           'smtp_port'   => 465,
-		  //           'crlf'    => "\r\n",
-		  //           'newline' => "\r\n"
-		  //       ];
-
-				$email_saya = "admin@jualkoding.com";
-				$pass_saya  = "%$#@cxz1";
+				$email_saya = "noreplay@hexindo-tbk.co.id";
+				$pass_saya  = "";
 				//konfigurasi email
 				$config = array();
 				$config['charset'] = 'utf-8';
-				$config['useragent'] = 'Jualkoding.com';
+				$config['useragent'] = '10.87.200.12';
 				$config['protocol']= "smtp";
 				$config['mailtype']= "html";
-				$config['smtp_host']= "ssl://mail.jualkoding.com";
-				$config['smtp_port']= "465";
-				$config['smtp_timeout']= "465";
+				$config['smtp_host']= "10.87.200.12";
+				$config['smtp_port']= "25";
+				$config['smtp_timeout']= "25";
 				$config['smtp_user']= "$email_saya";
 				$config['smtp_pass']= "$pass_saya";
 				$config['crlf']="\r\n";
@@ -184,7 +193,7 @@ class App extends CI_Controller {
 		        $this->load->library('email', $config);
 
 		        // Email dan nama pengirim
-		        $this->email->from('admin@jualkoding.com', 'AR Reminder - Invoice No. '.$invoice.'');
+		        $this->email->from('noreplay@hexindo-tbk.co.id', 'AR Reminder - Invoice No. '.$invoice.'');
 
 		        // Email penerima
 		        $this->email->to($email); // Ganti dengan email tujuan
@@ -205,8 +214,95 @@ class App extends CI_Controller {
 		            echo 'Sukses! email berhasil dikirim.<br>';
 		            $this->db->where('id_reminder', $value->id_reminder);
 		            $this->db->update('reminder', array('to_send'=>1));
+
+		            //kirim notif ke PSR
+		            //WA
+		            $this->Reminder_model->kirim_wa_psr(pesan_wa_balik($nama_psr, $customer, $invoice, number_format($value->amount_total), $value->invoice_due_date,$email),$telp_psr);
+		            //EMAIL
+		            $this->Reminder_model->kirim_email_psr(notif_email1($nama_psr, $customer, $invoice, number_format($value->amount_total), $value->invoice_due_date,$email),$email_psr);
+
 		        } else {
 		            echo 'Error! email tidak dapat dikirim.<br>';
+		            echo $this->email->print_debugger();
+		        }
+
+				echo "Y <BR>";
+			} else {
+				echo "T <BR>";
+			}
+			
+		}
+	}
+
+	public function notif_followup()
+	{
+		$this->db->where('to_send', 0);
+		foreach ($this->db->get('reminder')->result() as $key => $value) {
+
+			$email = '';
+			if ($value->email1 == null) {
+				$email = $value->email2;
+			} else {
+				$email = $value->email1;
+			}
+		
+			$customer = get_data('customer','customer_code',$value->customer_code,'nama');
+			$invoice = $value->invoice_number;
+			$phone_no = $value->handphone;
+			$bank = get_data('cabang','id_cabang',get_data('users','id_user',$value->user,'id_cabang'),'bank');
+			$cabang = get_data('cabang','id_cabang',get_data('users','id_user',$value->user,'id_cabang'),'cabang');
+			$no_rek = get_data('cabang','id_cabang',get_data('users','id_user',$value->user,'id_cabang'),'no_rekening');
+			$nama_psr = get_data('users','id_user',$value->user,'nama_user');
+			$email_psr = get_data('users','id_user',$value->user,'email');
+			$telp_psr = get_data('users','id_user',$value->user,'no_telp');
+			$psr = '';
+			
+			//cek apakah sudah = due date
+			
+			$tgl = $value->invoice_due_date;
+			// print_r($tgl);
+			if ($tgl == date('Y-m-d') ) {
+
+				$email_saya = "noreplay@hexindo-tbk.co.id";
+				$pass_saya  = "";
+				//konfigurasi email
+				$config = array();
+				$config['charset'] = 'utf-8';
+				$config['useragent'] = '10.87.200.12';
+				$config['protocol']= "smtp";
+				$config['mailtype']= "html";
+				$config['smtp_host']= "10.87.200.12";
+				$config['smtp_port']= "25";
+				$config['smtp_timeout']= "25";
+				$config['smtp_user']= "$email_saya";
+				$config['smtp_pass']= "$pass_saya";
+				$config['crlf']="\r\n";
+				$config['newline']="\r\n";
+				$config['wordwrap'] = TRUE;
+
+		        // Load library email dan konfigurasinya
+		        $this->load->library('email', $config);
+
+		        // Email dan nama pengirim
+		        $this->email->from('noreplay@hexindo-tbk.co.id', 'Notifikasi Follow Up Invoice');
+
+		        // Email penerima
+		        $this->email->to($email_psr); // Ganti dengan email tujuan PSR
+
+
+		        // Subject email
+		        $this->email->subject('Notifikasi Follow Up Invoice');
+
+		        // Isi email
+		        $this->email->message(notif_email1($nama_psr, $customer, $invoice, number_format($value->amount_total), $value->invoice_due_date,$email));
+
+		        // Tampilkan pesan sukses atau error
+		        if ($this->email->send()) {
+		            echo 'Sukses! email follow up berhasil dikirim.<br>';
+		            
+
+		        } else {
+		            echo 'Error! email follow up tidak dapat dikirim.<br>';
 		            echo $this->email->print_debugger();
 		        }
 
@@ -269,17 +365,43 @@ class App extends CI_Controller {
 				// Kita push (add) array data ke variabel data
 				$temp_di  = PHPExcel_Style_NumberFormat::toFormattedString($row['G'],'YYYY-MM-DD');
       			// $actualdate_di = date('Y-m-d',$temp_di);
-      			$temp_du  = PHPExcel_Style_NumberFormat::toFormattedString($row['H'],'YYYY-MM-DD');
+
+				$inv_date = $temp_di;
+				$n = $row['E'];
+                                
+if ($n == 'W1') {
+	$n = '+7 days';
+} elseif ($n == 'W2') {
+	$n = '+14 days';
+} elseif ($n == 'W3') {
+	$n = '+21 days';
+} elseif ($n == 'M1') {
+	$n = '+30 days';
+} elseif ($n == 'M2') {
+	$n = '+60 days';
+} elseif ($n == 'M3') {
+	$n = '+90 days';
+} elseif ($n == 'MH') {
+	$n = '+45 days';
+}
+
+				//Menambah tanggal
+				$date1 = $inv_date;
+				$date = new DateTime($date1);
+				$date_plus = $date->modify($n);
+				$tgl = $date_plus->format("Y-m-d");
+
+      			//$temp_du  = PHPExcel_Style_NumberFormat::toFormattedString($row['H'],'YYYY-MM-DD');
       			// $actualdate_du = date('Y-m-d',$temp_du);
 				array_push($data, array(
 					'customer_code'=>$row['A'], // Insert data nis dari kolom A di excel
-					'email1'=>$row['B'], // Insert data nama dari kolom B di excel
-					'email2'=>$row['C'], // Insert data jenis kelamin dari kolom C di excel
-					'handphone'=>$row['D'], // Insert data alamat dari kolom D di excel
+					'email1'=>$retVal1 = ($row['B'] == '') ? get_data('customer','customer_code',$row['A'],'email1') : $row['B'], // Insert data nama dari kolom B di excel
+					'email2'=>$retVal2 = ($row['C'] == '') ? get_data('customer','customer_code',$row['A'],'email2') : $row['C'], // Insert data jenis kelamin dari kolom C di excel
+					'handphone'=>$retVal3 = ($row['D'] == '') ? get_data('customer','customer_code',$row['A'],'handphone') : $row['D'], // Insert data alamat dari kolom D di excel
 					'top'=>$row['E'], // Insert data alamat dari kolom D di excel
 					'invoice_number'=>$row['F'], // Insert data alamat dari kolom D di excel
 					'invoice_date'=>$temp_di, // Insert data alamat dari kolom D di excel
-					'invoice_due_date'=>$temp_du, // Insert data alamat dari kolom D di excel
+					'invoice_due_date'=>$tgl, // Insert data alamat dari kolom D di excel
 					'amount_total'=>$row['I'], // Insert data alamat dari kolom D di excel
 					'user' => $this->session->userdata('id_user')
 				));
@@ -295,6 +417,71 @@ class App extends CI_Controller {
 		
 		$this->session->set_flashdata('message',alert_biasa('Import data excel berhasil','success'));
 		redirect('reminder','refresh');
+	}
+
+	public function import_customer()
+	{
+		unlink('upload/import_data/import_customer.xlsx');
+		include APPPATH.'third_party/PHPExcel/PHPExcel.php';
+
+		// Fungsi untuk melakukan proses upload file
+		$return = array();
+		$this->load->library('upload'); // Load librari upload
+			
+		$config['upload_path'] = './upload/import_data/';
+		$config['allowed_types'] = 'xlsx';
+		$config['max_size']	= '2048';
+		$config['overwrite'] = true;
+		$config['file_name'] = 'import_customer';
+	
+		$this->upload->initialize($config); // Load konfigurasi uploadnya
+		if($this->upload->do_upload('uploadexcel')){ // Lakukan upload dan Cek jika proses upload berhasil
+			// Jika berhasil :
+			$return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+			// return $return;
+		}else{
+			// Jika gagal :
+			$return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+			// return $return;
+		}
+		// print_r($return);exit();
+		
+		$excelreader = new PHPExcel_Reader_Excel2007();
+		$loadexcel = $excelreader->load('upload/import_data/import_customer.xlsx'); // Load file yang telah diupload ke folder excel
+		$sheet = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
+		
+		// Buat sebuah variabel array untuk menampung array data yg akan kita insert ke database
+		$data = array();
+		
+		$numrow = 1;
+		foreach($sheet as $row){
+			// Cek $numrow apakah lebih dari 1
+			// Artinya karena baris pertama adalah nama-nama kolom
+			// Jadi dilewat saja, tidak usah diimport
+			
+			if($numrow > 1){
+				// Kita push (add) array data ke variabel data
+				
+      			// $actualdate_du = date('Y-m-d',$temp_du);
+				array_push($data, array(
+					'customer_code'=>$row['A'], // Insert data nis dari kolom A di excel
+					'nama'=>$row['B'], // Insert data nama dari kolom B di excel
+					'handphone'=>$row['C'], // Insert data jenis kelamin dari kolom C di excel
+					'email1'=>$row['D'], // Insert data alamat dari kolom D di excel
+					'email2'=>$row['E'], // Insert data alamat dari kolom D di excel
+				));
+			}
+			
+			$numrow++; // Tambah 1 setiap kali looping
+		}
+		// echo "<pre>";
+		// print_r($data);exit;
+
+		// Panggil fungsi insert_multiple yg telah kita buat sebelumnya di model
+		$this->db->insert_batch('customer', $data);
+		
+		$this->session->set_flashdata('message',alert_biasa('Import data excel berhasil','success'));
+		redirect('customer','refresh');
 	}
 
 	public function cek_invoice_date()
@@ -339,6 +526,7 @@ class App extends CI_Controller {
 			if ($cek_user->num_rows() == 1) {
 				foreach ($cek_user->result() as $row) {
 					$sess_data['id_user'] = $row->id_user;
+					$sess_data['id_cabang'] = $row->id_cabang;
 					$sess_data['nama'] = $row->nama_user;
 					$sess_data['username'] = $row->username;
 					$sess_data['foto'] = $row->foto_user;

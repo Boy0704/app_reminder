@@ -25,6 +25,12 @@
         </div>
         <div class="form-group">
             <div class="form-line">
+            <label for="varchar">No Telp</label>
+            <input type="text" class="form-control" name="no_telp" id="no_telp" placeholder="No Telp" value="<?php echo $no_telp; ?>" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-line">
             <label for="varchar">Foto User </label>
             <input type="file" class="form-control" name="foto_user" id="foto_user" />
 

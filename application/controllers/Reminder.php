@@ -16,6 +16,89 @@ class Reminder extends CI_Controller
         $this->load->library('form_validation');
     }
 
+    public function custom()
+    {
+        // log_r($this->session->userdata());
+        $sql = '';
+        if ($_POST != NULL) {
+            if ($this->session->userdata('level') == 'supervisor') {
+                if (isset($_POST['c_customer'])) {
+                    $this->db->where('id_cabang', $this->session->userdata('id_cabang'));
+                    $this->db->where('customer_code', $_POST['customer']);
+                    $sql = $this->db->get('reminder');
+                }
+
+                if (isset($_POST['c_tanggal'])) {
+                    $tgl1 = $this->input->post('tgl1');
+                    $tgl2 = $this->input->post('tgl2');
+                    $id_cabang = $this->session->userdata('id_cabang');
+                    $sql = $this->db->query("SELECT * FROM reminder WHERE id_cabang='$id_cabang' and invoice_due_date BETWEEN $tgl1 and $tgl2");
+                }
+
+                if (isset($_POST['c_status'])) {
+                    $this->db->where('id_cabang', $this->session->userdata('id_cabang'));
+                    $this->db->where('to_send', $_POST['status_proses']);
+                    $sql = $this->db->get('reminder');
+                }
+
+                if (isset($_POST['c_status_reminder'])) {
+                    $this->db->where('id_cabang', $this->session->userdata('id_cabang'));
+                    $this->db->where('status', $_POST['status_reminder']);
+                    $sql = $this->db->get('reminder');
+                }
+
+                
+            } elseif ($this->session->userdata('level') == 'psr') {
+                if (isset($_POST['c_customer'])) {
+                    $this->db->where('user', $this->session->userdata('id_user'));
+                    $this->db->where('customer_code', $_POST['customer']);
+                    $sql = $this->db->get('reminder');
+                }
+
+                if (isset($_POST['c_tanggal'])) {
+                    $tgl1 = $this->input->post('tgl1');
+                    $tgl2 = $this->input->post('tgl2');
+                    $id_user = $this->session->userdata('id_user');
+                    $sql = $this->db->query("SELECT * FROM reminder WHERE user='$id_user' and invoice_due_date BETWEEN $tgl1 and $tgl2");
+                }
+
+                if (isset($_POST['c_status'])) {
+                    $this->db->where('user', $this->session->userdata('id_user'));
+                    $this->db->where('to_send', $_POST['status_proses']);
+                    $sql = $this->db->get('reminder');
+                }
+
+                if (isset($_POST['c_status_reminder'])) {
+                    $this->db->where('user', $this->session->userdata('id_user'));
+                    $this->db->where('status', $_POST['status_reminder']);
+                    $sql = $this->db->get('reminder');
+                }
+            }
+
+            $data = array(
+                    'judul_page' => 'reminder/reminder_list',
+                    'konten' => 'reminder/reminder_list_custom',
+                    'data' => $sql
+                );
+            $this->load->view('v_index', $data);
+        } else {
+            if ($this->session->userdata('level') == 'supervisor') {
+                $this->db->where('id_cabang', $this->session->userdata('id_cabang'));
+            } elseif ($this->session->userdata('level') == 'psr') {
+                $this->db->where('user', $this->session->userdata('id_user'));
+            }
+            
+            $data = array(
+                'judul_page' => 'reminder/reminder_list',
+                'konten' => 'reminder/reminder_list_custom',
+                'data' => $this->db->get('reminder')
+            );
+            $this->load->view('v_index', $data);
+        }
+
+        
+    }
+
     public function index()
     {
         $q = urldecode($this->input->get('q', TRUE));
@@ -67,8 +150,10 @@ class Reminder extends CI_Controller
 		'handphone' => $row->handphone,
 		'invoice_due_date' => $row->invoice_due_date,
 		'status' => $row->status,
+        'judul_page' => 'reminder/reminder_read',
+            'konten' => 'reminder/reminder_read',
 	    );
-            $this->load->view('reminder/reminder_read', $data);
+            $this->load->view('v_index', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('reminder'));

@@ -59,7 +59,8 @@ class User extends CI_Controller
 		'password' => $row->password,
 		'email' => $row->email,
 		'foto_user' => $row->foto_user,
-		'level' => $row->level,
+        'level' => $row->level,
+		'no_telp' => $row->no_telp,
 	    );
             $this->load->view('user/user_read', $data);
         } else {
@@ -80,7 +81,8 @@ class User extends CI_Controller
 	    'email' => set_value('email'),
 	    'foto_user' => set_value('foto_user'),
         'level' => set_value('level'),
-	    'id_cabang' => set_value('id_cabang'),
+        'id_cabang' => set_value('id_cabang'),
+	    'no_telp' => set_value('no_telp'),
         'konten' => 'user/user_form',
             'judul_page' => 'Data User',
 	);
@@ -113,7 +115,8 @@ class User extends CI_Controller
 		'email' => $this->input->post('email',TRUE),
 		'foto_user' => $dfile,
         'level' => $this->input->post('level',TRUE),
-		'id_cabang' => $this->input->post('id_cabang',TRUE),
+        'id_cabang' => $this->input->post('id_cabang',TRUE),
+		'no_telp' => $this->input->post('no_telp',TRUE),
 	    );
 
             $this->User_model->insert($data);
@@ -137,7 +140,8 @@ class User extends CI_Controller
 		'email' => set_value('email', $row->email),
 		'foto_user' => set_value('foto_user', $row->foto_user),
         'level' => set_value('level', $row->level),
-		'id_cabang' => set_value('id_cabang', $row->id_cabang),
+        'id_cabang' => set_value('id_cabang', $row->id_cabang),
+		'no_telp' => set_value('no_telp', $row->no_telp),
         'konten' => 'user/user_form',
             'judul_page' => 'Data User',
 	    );
@@ -164,6 +168,7 @@ class User extends CI_Controller
             'email' => $this->input->post('email',TRUE),
             'level' => $this->input->post('level',TRUE),
             'id_cabang' => $this->input->post('id_cabang',TRUE),
+            'no_telp' => $this->input->post('no_telp',TRUE),
             );
 
                 $this->User_model->update($this->input->post('id_user', TRUE), $data);
@@ -191,7 +196,8 @@ class User extends CI_Controller
             'email' => $this->input->post('email',TRUE),
             'foto_user' => $dfile,
             'level' => $this->input->post('level',TRUE),
-            'id_cabang' => $this->input->post('level',TRUE),
+            'id_cabang' => $this->input->post('id_cabang',TRUE),
+            'no_telp' => $this->input->post('no_telp',TRUE),
             );
 
                 $this->User_model->update($this->input->post('id_user', TRUE), $data);

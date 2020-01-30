@@ -15,6 +15,79 @@ class Reminder_model extends CI_Model
         parent::__construct();
     }
 
+    function kirim_wa_psr($message,$phone_no)
+    {
+        $message = preg_replace( "/(\n)/", "<ENTER>", $message );
+        $message = preg_replace( "/(\r)/", "<ENTER>", $message );
+
+        $phone_no = preg_replace( "/(\n)/", ",", $phone_no );
+        $phone_no = preg_replace( "/(\r)/", "", $phone_no );
+
+        $data = array("phone_no" => $phone_no, "key" => "b0d8a55cdfe3e0f97426f96f5bdf02d153bad3a993c2aaf3", "message" => $message);
+        $data_string = json_encode($data);
+
+        // echo $data_string; exit();
+        $ch = curl_init('http://116.203.92.59/api/send_message');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($data_string))
+        );
+        $result = curl_exec($ch);
+        echo $result;
+    }
+
+    function kirim_email_psr($messageEmail,$emailpenerima)
+    {
+        $email_saya = "noreplay@hexindo-tbk.co.id";
+        $pass_saya  = "";
+        //konfigurasi email
+        $config = array();
+        $config['charset'] = 'utf-8';
+        $config['useragent'] = '10.87.200.12';
+        $config['protocol']= "smtp";
+        $config['mailtype']= "html";
+        $config['smtp_host']= "10.87.200.12";
+        $config['smtp_port']= "25";
+        $config['smtp_timeout']= "25";
+        $config['smtp_user']= "$email_saya";
+        $config['smtp_pass']= "$pass_saya";
+        $config['crlf']="\r\n";
+        $config['newline']="\r\n";
+        $config['wordwrap'] = TRUE;
+
+        // Load library email dan konfigurasinya
+        $this->load->library('email', $config);
+
+        // Email dan nama pengirim
+        $this->email->from('noreplay@hexindo-tbk.co.id', 'Notifikasi reminder customer sudah dikirimkan');
+
+        // Email penerima
+        $this->email->to($emailpenerima); // Ganti dengan email tujuan
+
+
+        // Subject email
+        $this->email->subject('Notifikasi reminder customer sudah dikirimkan ');
+
+        // Isi email
+        $this->email->message($messageEmail);
+
+        // Tampilkan pesan sukses atau error
+        if ($this->email->send()) {
+            echo 'Sukses! email untuk PSR berhasil dikirim.<br>';
+        } else {
+            echo 'Error! email untuk PSR tidak dapat dikirim.<br>';
+            echo $this->email->print_debugger();
+        }
+    }
+
     // get all
     function get_all()
     {

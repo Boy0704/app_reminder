@@ -38,6 +38,7 @@
         <th>Nama User</th>
         <th>Username</th>
         <th>Email</th>
+        <th>No Telp</th>
         <th>Foto User</th>
         <th>Cabang</th>
         <th>Level</th>
@@ -53,6 +54,7 @@
             <td><?php echo $user->nama_user ?></td>
             <td><?php echo $user->username ?></td>
             <td><?php echo $user->email ?></td>
+            <td><?php echo $user->no_telp ?></td>
             <td><img src="image/user/<?php echo $user->foto_user ?>" style="width: 100px; height: 100px;"></td>
             <td><?php echo get_data('cabang','id_cabang',$user->id_cabang,'cabang') ?></td>
             <td><?php echo $user->level ?></td>

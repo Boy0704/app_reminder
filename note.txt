@@ -1,0 +1,10 @@
+perubahan :
+1. semua file di folder reminder
+2. file App.php di controller
+3. Reminder_model.php di model
+4. data_helper.php di helper
+5. file User.php di controller
+6. side.php di folder views
+7. customer_list.php di folder views/custumer
+8. copy folder html2pdf di thirdparty
+9. export_reminder_pdf.php di reminder
